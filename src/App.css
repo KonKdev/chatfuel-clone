@@ -1,0 +1,276 @@
+header{
+  position: sticky;
+  background-color: white;
+}
+
+.flex-cards-items{
+  display: flex;
+}
+
+.plus-icon{
+ line-height: 200px;
+ font-size: 25px;
+ color: rgba(170, 170, 170, 0.767);
+}
+
+
+.plus-icon:hover{
+  color: rgba(5, 4, 4, 0.993);
+ }
+
+.gallery-box{
+  width:35%;
+  margin-right: 7px;
+  line-height: 120px;
+}
+
+.dynamic-textItems{
+  list-style-type: none;
+}
+
+.gallery-block-input{
+  height: 60px;
+  font-size: 12px;
+  color: #767676;
+}
+
+/* .trash-btn{
+    
+} */
+
+/* 
+.gallery-box:hover:after{    
+    content:'';
+    position:absolute;
+      display: block;
+      top: -3px;
+      left: 224px;
+      position: absolute;
+      background: url("./componets/images/icons8-trash-24.png") center center no-repeat;
+      width: 30px;
+      height: 30px;
+     
+} */
+
+
+.form ::placeholder{
+  font-size: 12px;
+  position: relative;
+  bottom: 15px;
+  right: 10px;
+}
+
+.text-box{
+  width:35%;
+}
+
+.card-length {
+ padding: 10px;
+}
+
+.header-style{
+line-height: 60px;
+}
+
+.background1{
+ background-color: #f2f2f2;
+ height: 100%;
+} 
+
+.background2{
+ background-color: #E8E8E8;
+} 
+.title-size{
+ font-size: 15px;
+}
+
+.galleryContainer{
+  display: flex;
+  flex-direction: row;
+}
+
+/* .sidenav {
+ height: 100%;
+ width: 100px;
+ position: fixed;
+ z-index: 1;
+ top: 60px;
+ left: 0;
+ background-color: rgb(200, 190, 190);
+ overflow-x: hidden;
+ padding-top: 20px;
+} */
+
+/* .block-items{
+  justify-content: center; 
+   display: flex; 
+} */
+
+.dynamic-btns{
+  flex: 0 0 33.333333%;
+  padding-bottom: 5px;
+}
+
+.create-block{
+  display: flex;
+  flex-wrap: wrap;
+  padding-bottom: 5px;
+}
+
+.button-plus{
+  display: flex;
+  padding-bottom: 5px;
+}
+
+.blocks-header{
+   letter-spacing: 0.5px;
+   color: #373636;
+   font-size: 12px;
+   font-weight: 600;
+   padding: 12px 0px; 
+}
+
+.unTitled-block {
+   position: relative;
+   height: 36px;
+   border-radius: 6px;
+   border: 2px solid transparent;
+   color: black;
+   background-color: white;
+   box-shadow: none;
+   padding: 8px 16px;
+   font-size: 12px;
+   margin-right: 7px;
+   /* max-width: 100px; */
+}
+
+ /* ._1Sccq {
+   position: relative;
+   height: 36px;
+   border-radius: 6px;
+   border: 2px solid transparent;
+   background-color: var(--white);
+   box-shadow: none;
+   transition: box-shadow 0.2s ease;
+ } */
+   
+  .search-bar-width {
+   width: 90%;
+   padding-top: 20px;
+ }
+
+ .card-width {
+   width: 90%;
+   font-size: 11px;
+   line-height: 0px;
+   letter-spacing: normal;
+   margin: 6px 0 0 0px;
+ }
+ 
+ .text-size{
+   font-size: 10px;
+ }
+ 
+ .block-bg{
+   background-color: #f2f2f2;
+ }
+ 
+ .p-blocks{
+   line-height: 16px;
+   letter-spacing: normal;
+   color: #616060;
+   font-size: 13px;
+   margin: 0 0 16px;
+   width: 338px;
+ }
+ 
+ .header-blocks{
+   font-size: 12px;
+   font-weight: 600;
+   font-style: normal;
+   font-stretch: normal;
+   line-height: 1.5;
+   color: #373636;
+   text-transform: uppercase;
+   margin: 8px 0;
+ }
+ 
+ 
+ .has-search .form-control {
+   padding-left: 2.375rem;
+ }
+ 
+ .has-search .form-control-feedback {
+   position: absolute;
+   z-index: 2;
+   display: block;
+   width: 2.375rem;
+   height: 2.375rem;
+   line-height: 2.375rem;
+   text-align: center;
+   pointer-events: none;
+   color: #aaa;
+ }
+
+
+ .icon{
+     right: 150px;
+     position: absolute;
+ } 
+ 
+ .side-nav-btn{
+   width: 100%;
+   color: black;
+   display: flex;
+   flex-direction: column;
+   text-decoration: none;
+   position: relative;
+ }
+
+.block-style{
+ color: black;
+}
+
+#plus-style{
+ padding: 0px 45px;
+ font-size: 13px;
+}
+
+body {
+ overflow-x: hidden; 
+}
+ 
+.btn-width{
+ width: 100px;
+ height: 75px;
+}
+
+.block-group{
+ padding-top: 30px;
+ /* height: 50px; */
+}
+
+.add-element{
+ font-size: 20px;
+ line-height: 28px;
+ margin-bottom: 14px;
+ font-weight: 300;
+}
+
+.automate-btn{
+ position: absolute;
+ top: 150px;
+}
+
+.upload-img{
+  justify-content: center;
+  display: grid;
+}
+
+.rounded-0{
+  height: 67px;
+}
+
+/* .side-nav{
+ height: 100%;
+} */
