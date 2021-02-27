@@ -2,75 +2,111 @@ import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/button';
+import ContentBox from './cotentBox';
+import ReactDOM from 'react-dom'; 
 import '../App.css';
+import uuid from 'react-uuid'
 
 
 
  class RightSection extends Component {
 
-//  constructor(props) {
-    // super(props);
     state ={  
-        galleryElements :[],
+        galleryItems:[],
         elements :[],
         showGalleryBox:true,
         setShow:false,
         AddGalleryBlock:false,
         show: false,
-       
+        popupVisible:false,
+        generalList:[],
+        allElements :[
+                {
+                    type:'text',
+                    content:{
+                        the_text:'adsda adssad asd adsda',
+                        buttons:[
+                            {
+                               the_text:'dasdadsa',
+                               the_action: {
+                                   type:'url', //block
+                                   act:{
+                                       url:'https://google.com'
+                                   }
+                               }
+                            },
+                            {
+                              the_text:'dasdadsa',
+                              the_action: {
+                                  type:'block',
+                                  act:{
+                                      block_id:1234
+                                  }
+                              }
+                           },
+                        ]
+                    }
+                },
+                {
+                    type:'gallery',
+                    cards:[
+                        {
+                            imageurl:'',
+                            the_text:'',
+                            subtitle:'',
+                            the_url:'',
+                            buttons:[
+                              {
+                                  the_text:'dasdadsa',
+                                  the_action: {
+                                      type:'block',
+                                      act:{
+                                          block_id:1234
+                                      }
+                                  }
+                               },  
+                            ]
+                        }
+                    ]
+                }
+              ]
        };
 
-    //    this.deleteContact =this.deleteContact.bind(this);
-    // this.onAddGalleryButton = this.onAddGalleryButton.bind(this);
-    // }
+ 
        
 onAddGalleryButton = () => {
-    if(this.state.galleryElements && this.state.galleryElements.length === 5) return;
-  
-    this.setState({
-      galleryElements: [
-        ...this.state.galleryElements,
-        {
-          id: this.state.galleryElements && this.state.galleryElements.length ? this.state.galleryElements.length : 0,
-          type:'text',
-          content:{
-             title:'',
-             buttons:[
-               {
-                id: '',
-                title:''
-               }
-             
-             ]
-          }
-        },
-     ]
-    });
-  }
 
-  onAddTextSection = () => {
-    if(this.state.elements  && this.state.elements.length === 5) return;
-  
-    this.setState({
-      elements: [
-        ...this.state.elements,
-        {
-          id: this.state.elements && this.state.elements.length ? this.state.elements.length : 0,
-          type:'text',
-          content:{
-             title:'',
-             buttons:[
-               {
-                id: '',
-                title:''
-               }
-             
-             ]
-          }
-        },
-     ]
-    });
-      
+//23-2-2021
+// if(this.state.generalList && this.state.generalList.length === 5) return;
+console.log('hi');
+var element = this.state.allElements[1].cards[0].buttons[0];
+element.the_action.act.block_id= uuid();
+element.elementType = this.state.allElements[1].type;
+// var newList=[];
+// newList.push(element);
+return(this.setState({
+    generalList: [
+      ...this.state.generalList,
+   element
+   ]
+  }));
+}
+
+
+  onAddTextSection = (id) => {
+
+
+// if(this.state.generalList && this.state.generalList.length === 5) return;
+var element = this.state.allElements[0].content.buttons[1];
+element.elementType = this.state.allElements[0].type;
+element.the_action.act.block_id=  uuid();
+console.log(this.state.generalList)
+this.setState({
+          generalList: [
+            ...this.state.generalList,
+         element
+         ]
+        });
   }
 
   onAddGalleryBlock = ()=>{
@@ -79,6 +115,20 @@ onAddGalleryButton = () => {
     })
   }
   
+
+  blockPopUpShow = () => {
+    console.log('hi');
+     if (!this.state.popupVisible) {
+         // attach/remove event handler
+         document.addEventListener('click', this.handleOutsideClick, false);
+       } else {
+         document.removeEventListener('click', this.handleOutsideClick, false);
+       }
+     this.setState({
+         popupVisible:!this.state.popupVisible
+     })
+   }
+
   handleShow = () => {
     this.setState({
         show:true
@@ -91,12 +141,24 @@ onAddGalleryButton = () => {
     })
   };
   
+
+  handleOutsideClick= (e) => {
+    // ignore clicks on the component itself
+    if(this.pop) {
+         const domNode = ReactDOM.findDOMNode(this.pop)
+       if(this.pop.contains(e.target))  {
+             return;
+ }
+}
+this.blockPopUpShow();
+}
+  
   deleteContact = (id) =>{
     // console.log(index)
-    console.log(this.state.galleryElements);
-    const newGalleryElements = this.state.galleryElements.filter(galleryElement => galleryElement.id !== id);
+    console.log(this.state.generalList);
+    const newGalleryElements = this.state.generalList.filter(element => element.the_action.act.block_id !== id);
     this.setState({
-        galleryElements: newGalleryElements,
+        generalList: newGalleryElements,
         show:false
         });
  };
@@ -114,91 +176,118 @@ onAddGalleryButton = () => {
             </div>
 
         {/* Gallery button */}
-        <div>
-        {this.state.galleryElements && this.state.galleryElements.length ? this.state.galleryElements.map(galleryElement => 
-                        <div className='flex-cards-items'>
-                            <div className="card mb-4 box-shadow gallery-box">
-                                <div className="flex-column text-center">
-                                    <button type="button" className="btn">
-                                    <div className="upload-img text-center">
-                                    {/* <i class="fa fa-trash fa-2x trash-btn " aria-hidden="true"></i> */}
-                                    
-                                <div className='Mydiv'>
-                                <div className='fa fa-trash fa-2x' onClick={() => {this.handleShow()}}>                                              
-                                </div>
-                                    <Modal show={this.state.show} onHide={() => {this.handleClose()}}>
-                                    <Modal.Header closeButton>
-                                        <Modal.Title>Modal heading</Modal.Title>
-                                    </Modal.Header>
-                                    <Modal.Body>Are you sure you want to remove this card?</Modal.Body>
-                                    <Modal.Footer>
-                                        <Button variant="secondary" onClick={() =>{this.handleClose()}}>
-                                            ClOSE
-                                    </Button>
-                                        <Button variant="primary" onClick={() => {this.deleteContact(galleryElement.id)}}>
-                                            DELETE
-                                    </Button>
-                                    </Modal.Footer>
-                                    </Modal>
-                                </div>
-                                        
-                            <i className="fa fa-camera" aria-hidden="true"></i>
-                                        <span className="button-image__title">Upload image</span>
-                                                <p>Max size 10 MB</p>             
-                                            </div>
-                                    </button>
+ 
+<div class="container">
+        <div class="row">
 
-                                <div className="form">       
-                                    <input type="text" id="formControlLg1" className="form-control form-control-lg " placeholder="Heading (required)" />
-                                </div>
-                                <div className="form">       
-                                    <input type="text" id="formControlLg2" className="form-control form-control-lg" placeholder="Subtitle or description" />
-                                </div>
-                                <div className="form-url">       
-                                    <input type="text" id="formControlLg3" className="form-control form-control-sm" placeholder="URL" />
-                                </div>
-                                <div className="form-url">       
-                                    <input type="button" className="btn btn-block btn-light" name="2Button" value="+ ADD BUTTON(OPTIONAL)" id={galleryElement.id} />   
-                                </div>
-                                
-                                </div>                       
-                            </div>   
 
-                            { (galleryElement.id === this.state.galleryElements.length-1) &&
-                                    <div className="card mb-4 gallery-box">
-                                        <div className="card-body text-center">
-                                        <i className="fa fa-plus plus-icon" aria-hidden="true" onClick={this.onAddGalleryButton}></i>
-                                        </div>
-                                    </div>
-                            }
+           {this.state.generalList.map(element => {
+                    if(element.elementType === 'text'){
+                        return <div>
+                            <div className="card mb-4 box-shadow ">
+                    <div className="flex-column justify-content-between">   
+                        <input type="text" placeholder="Enter Text" name="Input" onChange={this.inputTextHandler} className="form-control" id={element.id} />
+                        <input ref={node => { this.pop = node; }} type="button" className="btn btn-block btn-light" name="2Button" value="+ADD BUTTON(OPTIONAL)" id="cell2Button"  onClick={()=>this.blockPopUpShow()}/> 
+                
+        
+            
+                </div>
+                </div>  
 
                         </div>
-                    ) : null}
+                    }
+                         <br></br>
+             
+                    if(element.elementType === 'gallery'){
+                        return <div key={element.the_action.act.block_id}>
+                <div className='flex-cards-items'>
+                <div className="card mb-4 box-shadow gallery-box">
+                    <div className="flex-column text-center">
+                        <button type="button" className="btn">
+                        <div className="upload-img text-center">
+                     
+                  
+                    <div className='fa fa-trash fa-2x' onClick={() => {this.handleShow()}}>                                              
+                    </div>
+                        <Modal show={this.state.show} onHide={() => {this.handleClose()}}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Modal heading</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>Are you sure you want to remove this card?</Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={() =>{this.handleClose()}}>
+                                ClOSE
+                        </Button>
+                            <Button variant="primary" onClick={() => {this.deleteContact(element.the_action.act.block_id)}}>
+                                DELETE
+                        </Button>
+                        </Modal.Footer>
+                        </Modal>
+               
+                            
+                <i className="fa fa-camera" aria-hidden="true"></i>
+                            <span className="button-image__title">Upload image</span>
+                                    <p>Max size 10 MB</p>             
+                                </div>
+                        </button>
 
+                    <div className="form">       
+                        <input type="text" id="formControlLg1" className="form-control form-control-lg " placeholder="Heading (required)" />
+                    </div>
+                    <div className="form">       
+                        <input type="text" id="formControlLg2" className="form-control form-control-lg" placeholder="Subtitle or description" />
+                    </div>
+                    <div className="form-url">       
+                        <input type="text" id="formControlLg3" className="form-control form-control-sm" placeholder="URL" />
+                    </div>
+                    <div className="form-url">       
+                        <input type="button" className="btn btn-block btn-light" name="2Button" value="+ ADD BUTTON(OPTIONAL)" id={element} />   
+                    </div>
+                    
+                    </div>                       
+                </div>   
+
+          
+                <div className="card mb-4 gallery-box">
+                        <div className="card-body text-center">
+                        <i className="fa fa-plus plus-icon" aria-hidden="true" onClick={()=>{this.onAddGalleryButton();}}></i>
+                        </div>
+                    </div>
+            </div>
+                
+
+                        </div>
+                    }                       
+            
+                <br></br>
+
+                {element.elementType === 'text' && 
+                    <div className="card mb-4 box-shadow text-box">
+                    <div className="flex-column justify-content-between">   
+                        <input type="text" placeholder="Enter Text" name="Input" onChange={this.inputTextHandler} className="form-control" id={element.id} />
+                        <input ref={node => { this.pop = node; }} type="button" className="btn btn-block btn-light" name="2Button" value="+ADD BUTTON(OPTIONAL)" id="cell2Button"  onClick={()=>this.blockPopUpShow()}/> 
+                </div>
+                </div>  
+                }
+            })}
+           
         </div>
 
+           
 
-        {/* Gallery button */}
 
-      
-         
-        <br></br>
-                
-        {this.state.elements && this.state.elements.length ? this.state.elements.map(element => 
-            <div className="card mb-4 box-shadow text-box">
-            <div className="flex-column justify-content-between">   
-                <input type="text" placeholder="Enter Text" name="Input" onChange={this.inputTextHandler} className="form-control" id={element.id} />
-                <input type="button" className="btn btn-block btn-light" name="2Button" value="+ADD BUTTON(OPTIONAL)" id="cell2Button" />      
-           {
-           this.state.blcokShow  ?
-           <div>
-               {/* <BlockShow/> */}
-            </div>:null}
-            </div>
-            </div>
-        ) : null}
+    {this.state.popupVisible ? 
+           <ContentBox/>
+           : null}
         
+
+        <div>
+            
+        </div>
         {/* text button */}
+
+</div>
+        
 
             <div className="add-element">
                 Add Element
@@ -206,12 +295,12 @@ onAddGalleryButton = () => {
 
             <div className='create-block'>
 
-                <button type="button" onClick={this.onAddTextSection} className="btn btn-light btn-lg btn-width">
+                <button type="button"  onClick={()=>this.onAddTextSection()} className="btn btn-light btn-lg btn-width">
                     <span><i className="fa fa-home"></i></span>
                     <p>Text</p>
                 </button>
             
-                <button type="button" onClick={this.onAddGalleryButton} className="btn btn-light btn-lg btn-width">
+                <button type="button"  onClick={()=>this.onAddGalleryButton()} className="btn btn-light btn-lg btn-width">
                     <span><i className="fa fa-meetup" aria-hidden="true"></i></span>
                     <p>Gallery</p>
                 </button>
@@ -222,17 +311,17 @@ onAddGalleryButton = () => {
                 </button>
             
             </div>
+         
         
-        
-            </section>
+        </section>
                 
    
-            </div>
+        </div>
     
         )
+    
     }
 }
 
-export default RightSection 
 
-// export default () => (<div><ReactBootstrapStyle /><RightSection /></div>)
+export default RightSection 
