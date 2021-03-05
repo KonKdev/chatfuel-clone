@@ -22,6 +22,7 @@ import uuid from 'react-uuid'
         generalList:[],
         allElements :[
                 {
+                    id: 0,
                     type:'text',
                     content:{
                         the_text:'adsda adssad asd adsda',
@@ -48,8 +49,10 @@ import uuid from 'react-uuid'
                     }
                 },
                 {
+                    id: 0,
                     type:'gallery',
                     cards:[
+
                         {
                             imageurl:'',
                             the_text:'',
@@ -78,29 +81,59 @@ onAddGalleryButton = () => {
 
 //23-2-2021
 // if(this.state.generalList && this.state.generalList.length === 5) return;
-console.log('hi');
-var element = this.state.allElements[1].cards[0].buttons[0];
-element.the_action.act.block_id= uuid();
-element.elementType = this.state.allElements[1].type;
+
+// var element = this.state.allElements[1].cards[0].buttons[0];
+// element.the_action.act.block_id= uuid();
+// element.elementType = this.state.allElements[1].type;
 // var newList=[];
 // newList.push(element);
+// return(this.setState({
+//     generalList: [
+//       ...this.state.generalList,
+//    newList
+//    ]
+//   }));
+
+const newListItem = {
+    id: uuid(),
+    type:'gallery',
+    cards:[
+        {
+            imageurl:'',
+            the_text:'',
+            subtitle:'',
+            the_url:'',
+            buttons:[
+              {
+                  the_text:'dasdadsa',
+                  the_action: {
+                      type:'block',
+                      act:{
+                          block_id:1234
+                      }
+                  }
+               },  
+            ]
+        }
+    ]
+};
+
+var newList = this.state.generalList;
+newList.push(newListItem);
+
 return(this.setState({
-    generalList: [
-      ...this.state.generalList,
-   element
-   ]
+    generalList: [...newList]
   }));
 }
 
 
-  onAddTextSection = (id) => {
-
-
+onAddTextSection = (id) => {
 // if(this.state.generalList && this.state.generalList.length === 5) return;
 var element = this.state.allElements[0].content.buttons[1];
 element.elementType = this.state.allElements[0].type;
-element.the_action.act.block_id=  uuid();
-console.log(this.state.generalList)
+element.the_action.act.block_id =  uuid();
+
+
 this.setState({
           generalList: [
             ...this.state.generalList,
@@ -114,10 +147,119 @@ this.setState({
         AddGalleryBlock:true
     })
   }
+
+  addGalleryItem(){
+
+
+    // console.log('addCalleryItem - index: ' + i);
+    // console.log(this.state.generalList);
+
+//     var element = this.state.allElements[1].cards[0].buttons[0];
+//     element.the_action.act.block_id= uuid();
+//     element.elementType = this.state.allElements[1].type;
+
+//     var newList=[];
+//     newList.push(element);
+
+    
+// this.setState({
+//     generalList: [
+//       ...this.state.generalList,
+//    element
+//    ]
+//   });
+
+// var element = this.state.allElements[1].cards[0].buttons[0];
+// element.the_action.act.block_id= uuid();
+// element.elementType = this.state.allElements[1].type;
+// var newList=[];
+//newList.push(element);
+
+
+var newList = [{
+    id: uuid(),
+    type:'gallery',
+    cards:[
+
+        {
+            imageurl:'',
+            the_text:'',
+            subtitle:'',
+            the_url:'',
+            buttons:[
+              {
+                  the_text:'dasdadsa',
+                  the_action: {
+                      type:'block',
+                      act:{
+                          block_id:1234
+                      }
+                  }
+               },  
+            ]
+        }
+    ]
+}];
+
+return(this.setState({
+    generalList: [
+      ...this.state.generalList,
+   newList
+   ]
+  }));
+
+
+  }
+
+  addItemForGallery(id){
+    // var element = this.state.allElements[1].cards[0].buttons[0];
+    // element.the_action.act.block_id= uuid();
+    // element.elementType = this.state.allElements[1].type;
+    // elemntList.splice(elemntList.length-1, 0,element);
+    // this.setState({
+    //     generalList:[...this.state.generalList]
+    // });
+
+
+    var currentGeneralList = this.state.generalList;
+
+    currentGeneralList.forEach(listItem => {
+        //BΗΜΑ 1: με βαση το id βρες το item του συνολικου πινακα, το οποιο πειραχτηκε στην οθονη (πατηθηκε +)
+        if(listItem.type === 'gallery' && listItem.id === id){
+        //BHMA 2: ετοιμασε ενα νεο cardItem
+                const newCardItem =   {
+                            imageurl:'',
+                            the_text:'',
+                            subtitle:'',
+                            the_url:'',
+                            buttons:[
+                            {
+                                the_text:'dasdadsa',
+                                the_action: {
+                                    type:'block',
+                                    act:{
+                                        block_id: uuid()
+                                    }
+                                }
+                            },  
+                            ]
+                     }
+
+
+            //BHMA 3: προσθεσε το στην λιστα του property cards του συγκεκριμενου galleryItem
+                listItem.cards.push(newCardItem);
+
+            //BHMA 4: ενημερωσε το state με τον ενημερωμενο πινακα
+            this.setState({
+                generalList: currentGeneralList
+            });
+            }
+        });
+}
   
 
   blockPopUpShow = () => {
-    console.log('hi');
+
      if (!this.state.popupVisible) {
          // attach/remove event handler
          document.addEventListener('click', this.handleOutsideClick, false);
@@ -153,12 +295,16 @@ this.setState({
 this.blockPopUpShow();
 }
   
-  deleteContact = (id) =>{
+ deleteContact = (index,e) =>{
     // console.log(index)
-    console.log(this.state.generalList);
-    const newGalleryElements = this.state.generalList.filter(element => element.the_action.act.block_id !== id);
+    // console.log(this.state.generalList);
+    // const newGalleryElements = this.state.generalList.filter(element => element.the_action.act.block_id !== i);
+const generalList = Object.assign([],this.state.generalList);
+
+generalList.splice(index,1);
+
     this.setState({
-        generalList: newGalleryElements,
+        generalList:generalList,
         show:false
         });
  };
@@ -177,102 +323,101 @@ this.blockPopUpShow();
 
         {/* Gallery button */}
  
-<div class="container">
-        <div class="row">
+<div className="container">
+        <div className="row">
 
 
-           {this.state.generalList.map(element => {
-                    if(element.elementType === 'text'){
-                        return <div>
+           {this.state.generalList.map((element,index) => {
+                 return  element.elementType === 'text' ?
+                 <div className="container">
+                 <div className="row">
+                         <div key={index}>
                             <div className="card mb-4 box-shadow ">
                     <div className="flex-column justify-content-between">   
                         <input type="text" placeholder="Enter Text" name="Input" onChange={this.inputTextHandler} className="form-control" id={element.id} />
                         <input ref={node => { this.pop = node; }} type="button" className="btn btn-block btn-light" name="2Button" value="+ADD BUTTON(OPTIONAL)" id="cell2Button"  onClick={()=>this.blockPopUpShow()}/> 
-                
-        
-            
-                </div>
-                </div>  
-
-                        </div>
-                    }
-                         <br></br>
              
-                    if(element.elementType === 'gallery'){
-                        return <div key={element.the_action.act.block_id}>
-                <div className='flex-cards-items'>
-                <div className="card mb-4 box-shadow gallery-box">
-                    <div className="flex-column text-center">
-                        <button type="button" className="btn">
-                        <div className="upload-img text-center">
-                     
-                  
-                    <div className='fa fa-trash fa-2x' onClick={() => {this.handleShow()}}>                                              
-                    </div>
-                        <Modal show={this.state.show} onHide={() => {this.handleClose()}}>
-                        <Modal.Header closeButton>
-                            <Modal.Title>Modal heading</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>Are you sure you want to remove this card?</Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="secondary" onClick={() =>{this.handleClose()}}>
-                                ClOSE
-                        </Button>
-                            <Button variant="primary" onClick={() => {this.deleteContact(element.the_action.act.block_id)}}>
-                                DELETE
-                        </Button>
-                        </Modal.Footer>
-                        </Modal>
-               
-                            
-                <i className="fa fa-camera" aria-hidden="true"></i>
-                            <span className="button-image__title">Upload image</span>
-                                    <p>Max size 10 MB</p>             
-                                </div>
-                        </button>
-
-                    <div className="form">       
-                        <input type="text" id="formControlLg1" className="form-control form-control-lg " placeholder="Heading (required)" />
-                    </div>
-                    <div className="form">       
-                        <input type="text" id="formControlLg2" className="form-control form-control-lg" placeholder="Subtitle or description" />
-                    </div>
-                    <div className="form-url">       
-                        <input type="text" id="formControlLg3" className="form-control form-control-sm" placeholder="URL" />
-                    </div>
-                    <div className="form-url">       
-                        <input type="button" className="btn btn-block btn-light" name="2Button" value="+ ADD BUTTON(OPTIONAL)" id={element} />   
-                    </div>
-                    
-                    </div>                       
-                </div>   
-
-          
-                <div className="card mb-4 gallery-box">
-                        <div className="card-body text-center">
-                        <i className="fa fa-plus plus-icon" aria-hidden="true" onClick={()=>{this.onAddGalleryButton();}}></i>
-                        </div>
-                    </div>
-            </div>
-                
-
-                        </div>
-                    }                       
-            
+                </div>
+             </div>  
                 <br></br>
 
-                {element.elementType === 'text' && 
-                    <div className="card mb-4 box-shadow text-box">
-                    <div className="flex-column justify-content-between">   
-                        <input type="text" placeholder="Enter Text" name="Input" onChange={this.inputTextHandler} className="form-control" id={element.id} />
-                        <input ref={node => { this.pop = node; }} type="button" className="btn btn-block btn-light" name="2Button" value="+ADD BUTTON(OPTIONAL)" id="cell2Button"  onClick={()=>this.blockPopUpShow()}/> 
-                </div>
-                </div>  
-                }
-            })}
-           
-        </div>
+                        </div>
+                        </div>
+                        </div>
+                        
+                         :
+             
+         <div className="container">
+           <div className="row">
+                <div className='flex-cards-items'>
+                    
+                    {element.cards.map(cardsItem => {
+                        return <div className="card mb-4 box-shadow gallery-box">
+                        <div className="flex-column text-center">
+                            <button type="button" className="btn">
+                            <div className="upload-img text-center">
+                         
+                      
+                        <div className='fa fa-trash fa-2x' onClick={() => {this.handleShow()}}>                                              
+                        </div>
+                            <Modal show={this.state.show} onHide={() => {this.handleClose()}}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Modal heading</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>Are you sure you want to remove this card?</Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={() =>{this.handleClose()}}>
+                                    ClOSE
+                            </Button>
+                                <Button variant="primary" onClick={() => {this.deleteContact(index)}}>
+                                    DELETE
+                            </Button>
+                            </Modal.Footer>
+                            </Modal>
+                   
+                                
+                    <i className="fa fa-camera" aria-hidden="true"></i>
+                                <span className="button-image__title">Upload image</span>
+                                        <p>Max size 10 MB</p>             
+                                    </div>
+                            </button>
+    
+                        <div className="form">       
+                            <input type="text" id="formControlLg1" className="form-control form-control-lg " placeholder="Heading (required)" />
+                        </div>
+                        <div className="form">       
+                            <input type="text" id="formControlLg2" className="form-control form-control-lg" placeholder="Subtitle or description" />
+                        </div>
+                        <div className="form-url">       
+                            <input type="text" id="formControlLg3" className="form-control form-control-sm" placeholder="URL" />
+                        </div>
+                        <div className="form-url">       
+                            <input type="button" className="btn btn-block btn-light" name="2Button" value="+ ADD BUTTON(OPTIONAL)" id={element} />   
+                        </div>
+                        
+                        </div>                       
+                    </div>  
+                    })}
 
+                 <div className="card mb-4 gallery-box">
+                        <div className="card-body text-center">
+                            {/* Εδώ θα μπει input στο addGaleryItem η λίστα των galleryItems */}
+                        <i className="fa fa-plus plus-icon" aria-hidden="true" onClick={()=>{this.addItemForGallery(element.id)}}></i>
+                        </div>
+                    </div>                 
+           
+
+            </div>
+        </div>        
+              
+</div>        
+            //   }                       
+            // }
+                
+            
+           })}
+            
+        
            
 
 
@@ -286,6 +431,7 @@ this.blockPopUpShow();
         </div>
         {/* text button */}
 
+</div>
 </div>
         
 
@@ -316,8 +462,9 @@ this.blockPopUpShow();
         </section>
                 
    
+      
+        
         </div>
-    
         )
     
     }
