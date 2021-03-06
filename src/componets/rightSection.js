@@ -79,21 +79,6 @@ import uuid from 'react-uuid'
        
 onAddGalleryButton = () => {
 
-//23-2-2021
-// if(this.state.generalList && this.state.generalList.length === 5) return;
-
-// var element = this.state.allElements[1].cards[0].buttons[0];
-// element.the_action.act.block_id= uuid();
-// element.elementType = this.state.allElements[1].type;
-// var newList=[];
-// newList.push(element);
-// return(this.setState({
-//     generalList: [
-//       ...this.state.generalList,
-//    newList
-//    ]
-//   }));
-
 const newListItem = {
     id: uuid(),
     type:'gallery',
@@ -128,7 +113,6 @@ return(this.setState({
 
 
 onAddTextSection = (id) => {
-// if(this.state.generalList && this.state.generalList.length === 5) return;
 var element = this.state.allElements[0].content.buttons[1];
 element.elementType = this.state.allElements[0].type;
 element.the_action.act.block_id =  uuid();
@@ -149,31 +133,6 @@ this.setState({
   }
 
   addGalleryItem(){
-
-
-    // console.log('addCalleryItem - index: ' + i);
-    // console.log(this.state.generalList);
-
-//     var element = this.state.allElements[1].cards[0].buttons[0];
-//     element.the_action.act.block_id= uuid();
-//     element.elementType = this.state.allElements[1].type;
-
-//     var newList=[];
-//     newList.push(element);
-
-    
-// this.setState({
-//     generalList: [
-//       ...this.state.generalList,
-//    element
-//    ]
-//   });
-
-// var element = this.state.allElements[1].cards[0].buttons[0];
-// element.the_action.act.block_id= uuid();
-// element.elementType = this.state.allElements[1].type;
-// var newList=[];
-//newList.push(element);
 
 
 var newList = [{
@@ -212,21 +171,13 @@ return(this.setState({
   }
 
   addItemForGallery(id){
-    // var element = this.state.allElements[1].cards[0].buttons[0];
-    // element.the_action.act.block_id= uuid();
-    // element.elementType = this.state.allElements[1].type;
-    // elemntList.splice(elemntList.length-1, 0,element);
-    // this.setState({
-    //     generalList:[...this.state.generalList]
-    // });
-
 
     var currentGeneralList = this.state.generalList;
 
     currentGeneralList.forEach(listItem => {
-        //BΗΜΑ 1: με βαση το id βρες το item του συνολικου πινακα, το οποιο πειραχτηκε στην οθονη (πατηθηκε +)
+
         if(listItem.type === 'gallery' && listItem.id === id){
-        //BHMA 2: ετοιμασε ενα νεο cardItem
+
                 const newCardItem =   {
                             imageurl:'',
                             the_text:'',
@@ -246,10 +197,10 @@ return(this.setState({
                      }
 
 
-            //BHMA 3: προσθεσε το στην λιστα του property cards του συγκεκριμενου galleryItem
+   
                 listItem.cards.push(newCardItem);
 
-            //BHMA 4: ενημερωσε το state με τον ενημερωμενο πινακα
+        
             this.setState({
                 generalList: currentGeneralList
             });
@@ -285,7 +236,7 @@ return(this.setState({
   
 
   handleOutsideClick= (e) => {
-    // ignore clicks on the component itself
+ 
     if(this.pop) {
          const domNode = ReactDOM.findDOMNode(this.pop)
        if(this.pop.contains(e.target))  {
@@ -295,10 +246,8 @@ return(this.setState({
 this.blockPopUpShow();
 }
   
- deleteContact = (index,e) =>{
-    // console.log(index)
-    // console.log(this.state.generalList);
-    // const newGalleryElements = this.state.generalList.filter(element => element.the_action.act.block_id !== i);
+ deleteItem = (index,e) =>{
+    
 const generalList = Object.assign([],this.state.generalList);
 
 generalList.splice(index,1);
@@ -369,7 +318,7 @@ generalList.splice(index,1);
                                 <Button variant="secondary" onClick={() =>{this.handleClose()}}>
                                     ClOSE
                             </Button>
-                                <Button variant="primary" onClick={() => {this.deleteContact(index)}}>
+                                <Button variant="primary" onClick={() => {this.deleteItem(index)}}>
                                     DELETE
                             </Button>
                             </Modal.Footer>
